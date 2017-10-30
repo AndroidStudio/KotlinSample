@@ -9,7 +9,7 @@ import sample.android.local.models.CustomerModel
 @Dao
 interface CustomerDao {
 
-    @Insert
+    @Insert()
     fun insertCustomer(customer: CustomerModel)
 
     @Query("SELECT * FROM customer LIMIT 1")
