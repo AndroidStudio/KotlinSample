@@ -36,7 +36,6 @@ class LoginViewModel(application: Application) : BaseViewModel(application) {
         customer.name = loginModel.data?.customer?.name;
         customer.email = loginModel.data?.customer?.email;
         database.query().insertCustomer(customer)
-        System.out.println("saveCustomer: " + Thread.currentThread().getName());
         return loginModel
     }
 
