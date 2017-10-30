@@ -32,20 +32,23 @@ class LoginActivity : AppCompatActivity() {
 
     private val observer: Observer<LoadingState> = Observer { state ->
         when (state) {
-            is STARTED -> progressBar.visibility = View.VISIBLE
-            is FINISHED -> progressBar.visibility = View.GONE
+            is STARTED -> showProgress(true)
+            is FINISHED -> showProgress(false)
             is ERROR -> {
-                progressBar.visibility = View.GONE
+                showProgress(false)
                 Log.d("Loading ERROR", "${state.error}")
                 startActivity(Intent(this, MainActivity::class.java))
             }
             is SUCCESS<*> -> {
-                progressBar.visibility = View.GONE
+                showProgress(false)
                 val loginResponse = state.model as LoginModel;
-
                 Log.d("Loading SUCCESS", loginResponse.data?.customer?.name)
                 startActivity(Intent(this, MainActivity::class.java))
             }
         }
+    }
+
+    private fun showProgress(showProgress: Boolean) {
+        progressBar.visibility = if (showProgress) View.VISIBLE else View.GONE
     }
 }

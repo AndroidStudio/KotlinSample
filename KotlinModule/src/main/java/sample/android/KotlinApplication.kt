@@ -17,6 +17,7 @@ class KotlinApplication : Application() {
         super.onCreate()
         applicationComponent = DaggerApplicationComponent.builder()
                 .databaseModule(DatabaseModule(this))
-                .networkModule(NetworkModule(BuildConfig.BASE_URL)).build()
+                .networkModule(NetworkModule(BuildConfig.BASE_URL))
+                .build()
     }
 }
