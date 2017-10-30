@@ -2,6 +2,7 @@ package sample.android.local.interfaces
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import io.reactivex.Flowable
 import sample.android.local.models.CustomerModel
@@ -9,7 +10,7 @@ import sample.android.local.models.CustomerModel
 @Dao
 interface CustomerDao {
 
-    @Insert()
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCustomer(customer: CustomerModel)
 
     @Query("SELECT * FROM customer LIMIT 1")

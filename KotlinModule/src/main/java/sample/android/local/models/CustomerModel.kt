@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey
 class CustomerModel {
 
     @ColumnInfo(name = "id")
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     var id: Int = 0
 
     @ColumnInfo(name = "name")
