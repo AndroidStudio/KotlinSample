@@ -1,7 +1,6 @@
 package sample.android.component
 
 import dagger.Component
-import dagger.Provides
 import sample.android.login.LoginViewModel
 import sample.android.main.MainViewModel
 import sample.android.modules.DatabaseModule

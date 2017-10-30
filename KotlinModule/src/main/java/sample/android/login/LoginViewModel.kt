@@ -3,6 +3,7 @@ package sample.android.login
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -29,6 +30,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         KotlinApplication.applicationComponent.inject(this)
+        Log.d("application", application.packageName)
     }
 
     private var disposable: Disposable? = null;

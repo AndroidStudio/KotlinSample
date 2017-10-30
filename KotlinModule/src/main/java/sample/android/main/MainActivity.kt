@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        lifecycle.addObserver(mainViewModel)
+
         mainViewModel.customerLiveData.observe(this, Observer<CustomerModel>
         { customerModel: CustomerModel? -> customerTextView.text = customerModel?.name })
 
