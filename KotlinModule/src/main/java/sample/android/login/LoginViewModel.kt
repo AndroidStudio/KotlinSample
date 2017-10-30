@@ -38,21 +38,22 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             return
         } else {
             disposable = remoteRepository.loginUser(email, password)
-                    .delay(5, TimeUnit.SECONDS)
                     .subscribeOn(Schedulers.io())
-                    .map(this::saveUser)
-                    .subscribeOn(Schedulers.newThread())
+                    .delay(1, TimeUnit.SECONDS)
+                    .map(this::saveCustomer)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::onSuccess, this::onFailed, this::onCompleted, this::onSubscribe)
             disposable?.let { disposable -> compositeDisposable.add(disposable) }
         }
     }
 
-    private fun saveUser(login: LoginModel): LoginModel {
+    private fun saveCustomer(loginModel: LoginModel): LoginModel {
         val customer = CustomerModel()
-        customer.name = login.data?.customer?.name;
+        customer.name = loginModel.data?.customer?.name;
+        customer.email = loginModel.data?.customer?.email;
         database.customerDao().insertCustomer(customer)
-        return login
+        System.out.println("saveCustomer: " + Thread.currentThread().getName());
+        return loginModel
     }
 
     private fun onSubscribe(d: Disposable) {
@@ -67,8 +68,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         loadingState.value = LoadingState.ERROR(throwable.message)
     }
 
-    private fun onSuccess(l: LoginModel) {
-        loadingState.value = LoadingState.SUCCESS(l)
+    private fun onSuccess(loginModel: LoginModel) {
+        loadingState.value = LoadingState.SUCCESS(loginModel)
     }
 
     override fun onCleared() {

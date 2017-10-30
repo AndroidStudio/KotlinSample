@@ -13,7 +13,9 @@ class DatabaseModule(private val context: Context) {
     @Provides
     @Singleton
     fun provideDatabase(): Database {
-        return Room.databaseBuilder(context, Database::class.java, "database").build();
+        return Room.databaseBuilder(context, Database::class.java, "database")
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
 }

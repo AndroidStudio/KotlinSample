@@ -5,7 +5,7 @@ import android.arch.persistence.room.RoomDatabase
 import sample.android.local.interfaces.CustomerDao
 import sample.android.local.models.CustomerModel
 
-@Database(entities = arrayOf(CustomerModel::class), version = 1)
+@Database(entities = arrayOf(CustomerModel::class), version = 2)
 abstract class Database : RoomDatabase() {
 
     abstract fun customerDao(): CustomerDao

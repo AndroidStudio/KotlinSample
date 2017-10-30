@@ -14,4 +14,6 @@ class CustomerModel {
     @ColumnInfo(name = "name")
     var name: String? = null
 
+    @ColumnInfo(name = "email")
+    var email: String? = null
 }

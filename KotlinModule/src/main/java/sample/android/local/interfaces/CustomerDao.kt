@@ -15,4 +15,6 @@ interface CustomerDao {
     @Query("SELECT * FROM customer LIMIT 1")
     fun getCustomer(): Flowable<CustomerModel>
 
+    @Query("SELECT COUNT(*) FROM customer")
+    fun getCustomerCount(): Flowable<Int>
 }

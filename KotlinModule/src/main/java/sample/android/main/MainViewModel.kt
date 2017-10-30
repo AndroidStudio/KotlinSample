@@ -3,6 +3,7 @@ package sample.android.main
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -25,9 +26,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getCustomer() {
-        compositeDisposable.add(database.customerDao().getCustomer()
+        compositeDisposable.add(database.customerDao().getCustomerCount()
+                .flatMap { count ->
+                    Log.d("COUNT", "$count")
+                    database.customerDao().getCustomer()
+                }
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
                 { customerModel -> this.customerLiveData.value = customerModel }))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
     }
 }
