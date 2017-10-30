@@ -1,18 +1,15 @@
 package sample.android.component
 
 import dagger.Component
-import sample.android.login.LoginViewModel
-import sample.android.main.MainViewModel
 import sample.android.modules.DatabaseModule
 import sample.android.modules.NetworkModule
+import sample.android.viewmodel.BaseViewModel
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = arrayOf(DatabaseModule::class, NetworkModule::class))
 interface ApplicationComponent {
 
-    fun inject(loginViewModel: LoginViewModel)
-
-    fun inject(mainViewModel: MainViewModel)
+    fun inject(baseViewModel: BaseViewModel)
 
 }

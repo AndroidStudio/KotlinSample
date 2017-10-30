@@ -1,37 +1,19 @@
 package sample.android.login
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import sample.android.KotlinApplication
 import sample.android.LoadingState
-import sample.android.local.Database
 import sample.android.local.models.CustomerModel
-import sample.android.remote.RemoteRepository
 import sample.android.remote.models.LoginModel
+import sample.android.viewmodel.BaseViewModel
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-class LoginViewModel(application: Application) : AndroidViewModel(application) {
-
-    @Inject
-    lateinit var remoteRepository: RemoteRepository
-    @Inject
-    lateinit var database: Database
-
-    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
+class LoginViewModel(application: Application) : BaseViewModel(application) {
 
     var loadingState: MutableLiveData<LoadingState> = MutableLiveData()
-
-    init {
-        KotlinApplication.applicationComponent.inject(this)
-        Log.d("application", application.packageName)
-    }
 
     private var disposable: Disposable? = null;
 
@@ -45,7 +27,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     .map(this::saveCustomer)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::onSuccess, this::onFailed, this::onCompleted, this::onSubscribe)
-            disposable?.let { disposable -> compositeDisposable.add(disposable) }
+            compositeDisposable.add(disposable!!)
         }
     }
 
@@ -53,7 +35,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         val customer = CustomerModel()
         customer.name = loginModel.data?.customer?.name;
         customer.email = loginModel.data?.customer?.email;
-        database.customerDao().insertCustomer(customer)
+        database.query().insertCustomer(customer)
         System.out.println("saveCustomer: " + Thread.currentThread().getName());
         return loginModel
     }
@@ -72,10 +54,5 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun onSuccess(loginModel: LoginModel) {
         loadingState.value = LoadingState.SUCCESS(loginModel)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
     }
 }

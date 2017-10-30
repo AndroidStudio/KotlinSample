@@ -3,9 +3,9 @@ package sample.android.local.models
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
-import sample.android.Constants.Companion.CUSTOMER_TABLE
+import sample.android.local.tables.Tables.Companion.CUSTOMER
 
-@Entity(tableName = CUSTOMER_TABLE)
+@Entity(tableName = CUSTOMER)
 class CustomerModel {
 
     @ColumnInfo(name = "id")

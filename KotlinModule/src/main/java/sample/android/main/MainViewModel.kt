@@ -1,35 +1,24 @@
 package sample.android.main
 
 import android.app.Application
-import android.arch.lifecycle.*
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.OnLifecycleEvent
 import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import sample.android.KotlinApplication
-import sample.android.local.Database
 import sample.android.local.models.CustomerModel
-import javax.inject.Inject
+import sample.android.viewmodel.BaseViewModel
 
-class MainViewModel(application: Application) : AndroidViewModel(application), LifecycleObserver {
-
-    @Inject
-    lateinit var database: Database
-
-    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
+class MainViewModel(application: Application) : BaseViewModel(application) {
 
     var customerLiveData: MutableLiveData<CustomerModel> = MutableLiveData()
 
-    init {
-        KotlinApplication.applicationComponent.inject(this)
-        Log.d("application", application.packageName)
-    }
-
     fun getCustomer() {
-        compositeDisposable.add(database.customerDao().getCustomerCount()
+        compositeDisposable.add(database.query().getCustomerCount()
                 .flatMap { count ->
                     Log.d("COUNT", "$count")
-                    database.customerDao().getCustomer()
+                    database.query().getCustomer()
                 }
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(

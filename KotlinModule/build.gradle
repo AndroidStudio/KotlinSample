@@ -22,10 +22,6 @@ android {
             buildConfigField "String", "BASE_URL", "\"http://dailyvery.witchcraftstudios.com\""
         }
     }
-    compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
-    }
 }
 
 ext {

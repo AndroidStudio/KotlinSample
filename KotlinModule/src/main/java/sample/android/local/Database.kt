@@ -8,6 +8,6 @@ import sample.android.local.models.CustomerModel
 @Database(entities = arrayOf(CustomerModel::class), version = 4)
 abstract class Database : RoomDatabase() {
 
-    abstract fun customerDao(): DatabaseQuery
+    abstract fun query(): DatabaseQuery
 
 }
