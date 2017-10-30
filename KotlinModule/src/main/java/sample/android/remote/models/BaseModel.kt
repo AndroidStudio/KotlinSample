@@ -3,7 +3,7 @@ package sample.android.remote.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-open class BaseResponseModel {
+open class BaseModel {
 
     @SerializedName("description")
     @Expose
@@ -29,7 +29,6 @@ open class BaseResponseModel {
         @SerializedName("validator")
         @Expose
         var validator: Validator? = null
-
     }
 
     inner class Server {
@@ -50,6 +49,5 @@ open class BaseResponseModel {
         @SerializedName("email")
         @Expose
         var email: String? = null
-
     }
 }

@@ -3,7 +3,7 @@ package sample.android.remote.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class LoginResponse : BaseResponseModel() {
+class LoginModel : BaseModel() {
 
     @SerializedName("data")
     @Expose

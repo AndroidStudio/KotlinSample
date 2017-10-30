@@ -10,8 +10,8 @@ import android.view.View
 import kotlinx.android.synthetic.main.login_layout.*
 import sample.android.LoadingState
 import sample.android.LoadingState.*
-import sample.android.mainactivity.MainActivity
-import sample.android.remote.models.LoginResponse
+import sample.android.main.MainActivity
+import sample.android.remote.models.LoginModel
 import kotlin.sample.R
 
 class LoginActivity : AppCompatActivity() {
@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
             }
             is SUCCESS<*> -> {
                 progressBar.visibility = View.GONE
-                val loginResponse = state.model as LoginResponse;
+                val loginResponse = state.model as LoginModel;
 
                 Log.d("Loading SUCCESS", loginResponse.data?.customer?.name)
                 startActivity(Intent(this, MainActivity::class.java))

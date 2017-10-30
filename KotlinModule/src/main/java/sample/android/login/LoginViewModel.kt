@@ -9,8 +9,10 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import sample.android.KotlinApplication
 import sample.android.LoadingState
+import sample.android.local.Database
+import sample.android.local.models.CustomerModel
 import sample.android.remote.RemoteRepository
-import sample.android.remote.models.LoginResponse
+import sample.android.remote.models.LoginModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -18,6 +20,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     @Inject
     lateinit var remoteRepository: RemoteRepository
+    @Inject
+    lateinit var database: Database
 
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
@@ -44,8 +48,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun saveUser(l: LoginResponse): LoginResponse {
-        return l
+    private fun saveUser(login: LoginModel): LoginModel {
+        val customer = CustomerModel()
+        customer.name = login.data?.customer?.name;
+        database.customerDao().insertCustomer(customer)
+        return login
     }
 
     private fun onSubscribe(d: Disposable) {
@@ -60,7 +67,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         loadingState.value = LoadingState.ERROR(throwable.message)
     }
 
-    private fun onSuccess(l: LoginResponse) {
+    private fun onSuccess(l: LoginModel) {
         loadingState.value = LoadingState.SUCCESS(l)
     }
 

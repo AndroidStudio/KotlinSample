@@ -3,6 +3,7 @@ package sample.android
 import android.app.Application
 import sample.android.component.ApplicationComponent
 import sample.android.component.DaggerApplicationComponent
+import sample.android.modules.DatabaseModule
 import sample.android.modules.NetworkModule
 import kotlin.sample.BuildConfig
 
@@ -15,6 +16,7 @@ class KotlinApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         applicationComponent = DaggerApplicationComponent.builder()
+                .databaseModule(DatabaseModule(this))
                 .networkModule(NetworkModule(BuildConfig.BASE_URL)).build()
     }
 }
