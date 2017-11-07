@@ -69,7 +69,7 @@ dependencies {
 }
 
 repositories {
-    /*timber kt*/
+    /*http logs*/
     maven { url "https://jitpack.io" }
 
     mavenCentral()

@@ -10,6 +10,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.login_layout.*
 import sample.android.LoadingState
 import sample.android.LoadingState.*
+import sample.android.annotation.AnnotationSample
 import sample.android.main.MainActivity
 import sample.android.remote.models.LoginModel
 import kotlin.sample.R
@@ -27,6 +28,13 @@ class LoginActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener {
             viewModel.loginUser(emailEditText.text.toString(), passwordEditText.text.toString())
+        }
+
+        val annotationSample = AnnotationSample()
+        try {
+            annotationSample.onResult()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

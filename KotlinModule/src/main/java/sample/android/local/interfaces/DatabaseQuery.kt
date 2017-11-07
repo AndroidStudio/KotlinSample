@@ -20,4 +20,5 @@ interface DatabaseQuery {
     @Query("SELECT COUNT(*) FROM $CUSTOMER")
     fun getCustomerCount(): Flowable<Int>
 
+
 }

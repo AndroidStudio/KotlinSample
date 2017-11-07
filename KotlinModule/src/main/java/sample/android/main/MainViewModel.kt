@@ -29,9 +29,4 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     fun onResume() {
         Log.d("MainViewModel", "ON_RESUME")
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
-    }
 }

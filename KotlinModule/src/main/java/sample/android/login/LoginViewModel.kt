@@ -27,7 +27,8 @@ class LoginViewModel(application: Application) : BaseViewModel(application) {
                     .map(this::saveCustomer)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::onSuccess, this::onFailed, this::onCompleted, this::onSubscribe)
-            compositeDisposable.add(disposable!!)
+
+            disposable?.let { disposable -> compositeDisposable.add(disposable) }
         }
     }
 
