@@ -39,6 +39,5 @@ class LoginModel : BaseModel() {
         @SerializedName("token")
         @Expose
         var token: String? = null
-
     }
 }

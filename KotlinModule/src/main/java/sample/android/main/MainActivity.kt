@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import sample.android.RecyclerListAdapter
 import sample.android.local.models.CustomerModel
@@ -15,6 +16,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        Log.d("TAG", "" + intent.action)
 
         val mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         lifecycle.addObserver(mainViewModel)

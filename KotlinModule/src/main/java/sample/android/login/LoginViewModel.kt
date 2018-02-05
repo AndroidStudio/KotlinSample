@@ -1,10 +1,9 @@
 package sample.android.login
 
 import android.app.Application
-import android.arch.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import sample.android.LoadingState
 import sample.android.local.models.CustomerModel
 import sample.android.remote.models.LoginModel
@@ -13,23 +12,21 @@ import java.util.concurrent.TimeUnit
 
 class LoginViewModel(application: Application) : BaseViewModel(application) {
 
-    var loadingState: MutableLiveData<LoadingState> = MutableLiveData()
-
-    private var disposable: Disposable? = null;
+    var state: BehaviorSubject<LoadingState> =
+            BehaviorSubject.createDefault(LoadingState.FINISHED())
 
     fun loginUser(email: String, password: String) {
-        if (disposable != null && !disposable!!.isDisposed) {
+        if (state.value is LoadingState.STARTED) {
             return
-        } else {
-            disposable = remoteRepository.loginUser(email, password)
-                    .subscribeOn(Schedulers.io())
-                    .delay(1, TimeUnit.SECONDS)
-                    .map(this::saveCustomer)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::onSuccess, this::onFailed, this::onCompleted, this::onSubscribe)
-
-            disposable?.let { disposable -> compositeDisposable.add(disposable) }
         }
+
+        state.onNext(LoadingState.STARTED())
+        compositeDisposable.add(remoteRepository.loginUser(email, password)
+                .subscribeOn(Schedulers.io())
+                .delay(10, TimeUnit.SECONDS)
+                .map(::saveCustomer)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(::onSuccess, ::onFailed, ::onCompleted))
     }
 
     private fun saveCustomer(loginModel: LoginModel): LoginModel {
@@ -40,19 +37,19 @@ class LoginViewModel(application: Application) : BaseViewModel(application) {
         return loginModel
     }
 
-    private fun onSubscribe(d: Disposable) {
-        loadingState.value = LoadingState.STARTED()
-    }
-
     private fun onCompleted() {
-        loadingState.value = LoadingState.FINISHED()
+        state.onNext(LoadingState.FINISHED())
     }
 
     private fun onFailed(throwable: Throwable) {
-        loadingState.value = LoadingState.ERROR(throwable.message)
+        state.onNext(LoadingState.ERROR(throwable.message))
+    }
+
+    infix fun forceChangeState(state: LoadingState) {
+        LoginViewModel@this.state.onNext(state)
     }
 
     private fun onSuccess(loginModel: LoginModel) {
-        loadingState.value = LoadingState.SUCCESS(loginModel)
+        state.onNext(LoadingState.SUCCESS(loginModel))
     }
 }
